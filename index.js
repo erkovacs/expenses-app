@@ -38,25 +38,23 @@ app.post('/api/users', async (req, res) => {
             if(err){
                 res.status(500).json({success: false, error: err.toString()});
             }
-            const sql = `INSERT INTO users (
+            const sql = `INSERT INTO \`users\` (
                 \`user_name\`,
                 \`password\`,
                 \`firstname\`,
-                \`lastname\`,
+                \`lastname\`
                 ) VALUES (
                 ?,
                 ?,
                 ?,
                 ?)`;
             try {
-                console.log({sql, user_name, hash, firstname, lastname});
-                const users = await db.query(sql, user_name, hash, firstname, lastname);
-                console.log(users);
-                // if(users.length > 0){
-                //     res.status(200).json({success: true, results: users});
-                // } else {
-                //     res.status(404).json({success: true, results: []});
-                // }
+                const ok = await db.query(sql, user_name, hash, firstname, lastname);
+                if(ok.insertId){
+                    res.status(200).json({success: true, insertId: ok.insertId});
+                } else {
+                    res.status(500).json({success: true, error: ok.message});
+                }
             } catch(e){
                 res.status(500).json({success: false, error: e.toString()});
             }
