@@ -128,4 +128,12 @@ User.delete("/:id", async (req, res) => {
   }
 });
 
+User.post("/login", async (req, res) => {
+  res.status(500).json({error: "Not implemented"});
+});
+
+User.post("/logout", async (req, res) => {
+  res.status(500).json({error: "Not implemented"});
+});
+
 module.exports = User;
