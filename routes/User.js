@@ -58,6 +58,8 @@ User.post("/", async (req, res) => {
         res.status(500).json({ success: false, error: e.toString() });
       }
     });
+  } else {
+    res.status(400).json({ success: false, error: "Bad request" });
   }
 });
 
@@ -129,11 +131,27 @@ User.delete("/:id", async (req, res) => {
 });
 
 User.post("/login", async (req, res) => {
-  res.status(500).json({error: "Not implemented"});
+  const password = req.body.password;
+  const users = await db.query(
+    "SELECT * FROM users WHERE user_name = ?",
+    req.body.user_name
+  );
+  if (users.length > 0) {
+    bcrypt.compare(password, users[0].password, (err, match) => {
+      if (err) res.status(500).json({ success: false, error: err.toString() });
+      if (match) {
+        res.status(200).json({ success: true, apiToken: "API_TOKEN" });
+      } else {
+        res.status(404).json({ success: false, error: "User not found" });
+      }
+    });
+  } else {
+    res.status(404).json({ success: false, error: "User not found" });
+  }
 });
 
 User.post("/logout", async (req, res) => {
-  res.status(500).json({error: "Not implemented"});
+  res.status(500).json({ error: "Not implemented" });
 });
 
 module.exports = User;
