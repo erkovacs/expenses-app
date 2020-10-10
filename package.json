@@ -17,7 +17,7 @@
   },
   "homepage": "https://github.com/codepadawan93/expenses-app#readme",
   "dependencies": {
-    "bcrypt": "^3.0.6",
+    "bcrypt": "^5.0.0",
     "bootstrap": "^4.3.1",
     "express": "^4.17.1",
     "mysql": "^2.17.1"
